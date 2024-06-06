@@ -1,4 +1,5 @@
 
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
@@ -14,7 +15,11 @@ class CoinMarketCapScraper:
         # options.add_argument("--headless")
         options.add_argument("--disable-extensions")
         options.add_argument("--disable-gpu")
-        #options.set_capability("proxy", self.get_proxy_data())
+
+        proxy = self.get_proxy_data()
+        if proxy:
+            options.set_capability("proxy", proxy)
+
         self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
         
 
@@ -69,39 +74,41 @@ class CoinMarketCapScraper:
         return [ele.text for ele in eles]
     
     def get_links(self):
-        eles = self.coin_state_section.find_elements(by=By.XPATH, value=".//div[@class='sc-d1ede7e3-0 sc-7f0f401-2 bwRagp kXjUeJ']")[:3]
+        sections = self.coin_state_section.find_elements(by=By.XPATH, value=".//div[@class='sc-d1ede7e3-0 sc-7f0f401-2 bwRagp kXjUeJ']")[:3]
         contracts = []
         weblink = []
         socials = []
 
-        for con in eles[0].find_elements(by=By.TAG_NAME, value="a"):
+        for con in sections[0].find_elements(by=By.TAG_NAME, value="a"):
             contracts.append({
                 "name": con.text.split("\n")[0],
                 "address": con.get_attribute("href").split("/")[-1]
             })
 
-        for soc in eles[1].find_elements(by=By.TAG_NAME, value="a"):
+        for soc in sections[1].find_elements(by=By.TAG_NAME, value="a"):
             weblink.append({
                 "name": soc.text,
                 "link": soc.get_attribute("href")
             })
 
-        for soc in eles[2].find_elements(by=By.TAG_NAME, value="a"):
+        for soc in sections[2].find_elements(by=By.TAG_NAME, value="a"):
             socials.append({
                 "name": soc.text,
                 "link": soc.get_attribute("href")
             })
         return contracts, weblink, socials
         
-    def get_proxy_data():
-        proxy = "http://ankitproxy:ankit@PROXYMESH@us-ca.proxymesh.com:31280"
-        return {
-            "httpProxy": proxy,
-            "ftpProxy": proxy,
-            "sslProxy": proxy,
-            "noProxy": None,
-            "proxyType": "manual"
-        }
+    def get_proxy_data(self):
+        proxy = os.getenv("PROXY_URL") 
+        if proxy:
+            return {
+                "httpProxy": proxy,
+                "ftpProxy": proxy,
+                "sslProxy": proxy,
+                "noProxy": None,
+                "proxyType": "manual"
+            }
+        else: return None
 
 
     def close(self):
