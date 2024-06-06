@@ -113,14 +113,3 @@ class CoinMarketCapScraper:
 
     def close(self):
         self.driver.quit()
-
-
-scraper = CoinMarketCapScraper()
-results = []
-for coin in ["dogecoin", "shiba-inu"]:
-    data = scraper.get_coin_data(coin.lower())
-    results.append({"coin": coin, "output": data})
-scraper.close()
-
-
-print(results)
