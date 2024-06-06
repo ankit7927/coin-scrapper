@@ -2,7 +2,7 @@ import uuid
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .tasks import scrape_coin_data, create_task
+from .tasks import scrape_coin_data
 from celery.result import AsyncResult
 
 @api_view(['POST'])
