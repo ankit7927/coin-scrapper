@@ -4,7 +4,7 @@
 
 <h3>Output</h3>
 
-<table border="1">
+<table>
     <tr>
         <td>
             <p>request sent</p>
