@@ -85,7 +85,7 @@ class CoinMarketCapScraper:
         
 
         text = sections[0].find_element(By.XPATH, ".//div[@data-role='header' and @class='sc-d1ede7e3-0 kdeYgj']").text
-        if text == "Contracts": # "Official links":
+        if text == "Contracts":
             for con in sections[0].find_elements(by=By.TAG_NAME, value="a"):
                 contracts.append({
                     "name": con.text.split("\n")[0],
