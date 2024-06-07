@@ -24,6 +24,7 @@ pycparser==2.22
 PySocks==1.7.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
+redis==5.0.5
 requests==2.32.3
 selenium==4.21.0
 six==1.16.0
