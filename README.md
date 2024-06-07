@@ -54,9 +54,8 @@ $ redis-server
 celery --app=coinscrapper worker --loglevel=info --pool=threads
 ```
 
-<p>4. run app
-<p>
+<p>4. run app</p>
 
-    ```
-    python manage.py runserver
-    ```
+```
+python manage.py runserver
+```
